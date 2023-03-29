@@ -9,6 +9,12 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [tours, setTours] = useState([]);
 
+  // filter and remove function
+  const removeTour = (id) => {
+    const newTours = tours && tours.filter((tour) => tour.id !== id);
+    setTours(newTours);
+  };
+
   const fetchTours = async () => {
     setLoading(true);
 
@@ -21,7 +27,7 @@ function App() {
       // console.log(response);
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -38,9 +44,27 @@ function App() {
       </main>
     );
   }
+
+  // ref function
+  if (tours.length === 0) {
+    return (
+      <main className="items-center mx-auto">
+        <div className="">
+          <h2 className=" font-bold text-red-600 ">No Tours Left</h2>
+          <button
+            onClick={fetchTours}
+            className="bg-blue-500  text-white font-bold py-2 px-4 rounded uppercase mx-28 my-2 -mt-3"
+          >
+            refresh
+          </button>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main>
-      <Tours />
+      <Tours tours={tours} removeTour={removeTour} />
     </main>
   );
 }
